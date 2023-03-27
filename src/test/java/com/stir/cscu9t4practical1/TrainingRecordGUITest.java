@@ -22,8 +22,6 @@ import java.lang.reflect.Method;
 import javax.swing.JButton;
 
 
-
-
 /**
  *
  * @author saemundur
