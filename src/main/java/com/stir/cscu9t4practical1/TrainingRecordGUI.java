@@ -37,9 +37,12 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     private JLabel labrec = new JLabel(" Recovery (mins):");
     private JLabel labwhr = new JLabel(" Where:");
     
+    
     private JButton addR = new JButton("Add");
     private JButton lookUpByDate = new JButton("Look Up");
     private JButton findAllByDate = new JButton("Find By Date");
+    private JButton remove = new JButton("Remove");
+    
     
     String[] training = {"Generic", "Swim", "Cycle", "Sprint"}; 
     private JComboBox trainingType = new JComboBox(training);
@@ -104,6 +107,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         lookUpByDate.addActionListener(this);
         add(findAllByDate);
         findAllByDate.addActionListener(this);
+        add(remove);
+        remove.addActionListener(this);
         add(outputArea);
         outputArea.setEditable(false);
         
@@ -122,61 +127,68 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         if (event.getSource() == addR) {
             message = addEntry((String) trainingType.getSelectedItem());
         }
-        
-        
-        
         if (event.getSource() == lookUpByDate) {
             message = lookupEntry();
         }
         if (event.getSource() == findAllByDate) {
         	message = findAll();
         }
+        if (event.getSource() == remove) {
+            message = removeEntry();
+        }
         outputArea.setText(message);
         blankDisplay();
     } // actionPerformed
 
     public String addEntry(String what) {
-    	String message = "Record added\n";
+    	String message = "";
         System.out.println("Adding "+what+" entry to the records");
         int m, d, y, h, mm, s, reps, rec;
         float km;
         String n = "", trn = "", tmp = "", whr = "";
         Entry e = null;
         
-            m = Integer.parseInt(month.getText());
-            d = Integer.parseInt(day.getText());
-            y = Integer.parseInt(year.getText());
-            km = java.lang.Float.parseFloat(dist.getText());
-            h = Integer.parseInt(hours.getText());
-            mm = Integer.parseInt(mins.getText());
-            s = Integer.parseInt(secs.getText());
-            n = name.getText();
+        km = java.lang.Float.parseFloat(dist.getText());
+        m = Integer.parseInt(month.getText());
+        d = Integer.parseInt(day.getText());
+        y = Integer.parseInt(year.getText());
+        h = Integer.parseInt(hours.getText());
+        mm = Integer.parseInt(mins.getText());
+        s = Integer.parseInt(secs.getText());
+        n = name.getText();
             
-            if (what.equals("cycle")) {
+        if (what.equals("cycle")) {
                     trn = terrain.getText();
                     tmp = tempo.getText();
                     e = new CycleEntry(n, d, m, y, h, mm, s, km, trn, tmp);
-                    myAthletes.addEntry(e);
                     
-            } else if (what.equals("sprint")) {
+        } else if (what.equals("sprint")) {
                     reps = Integer.parseInt(repetitions.getText());
                     rec = Integer.parseInt(recovery.getText());
                     e = new SprintEntry(n, d, m, y, h, mm, s, km, reps, rec);
-                    myAthletes.addEntry(e);
                     
-            } else if (what.equals("swim")) {
+        } else if (what.equals("swim")) {
                     whr = where.getText();
                     e = new SwimEntry(n, d, m, y, h, mm, s, km, whr);
-                    myAthletes.addEntry(e);
                     
-            } else {	
+        } else {	
                     e = new Entry(n, d, m, y, h, mm, s, km);
-                    myAthletes.addEntry(e);
-            }
+        } 
+        message = myAthletes.addEntry(e);
         return message ;
     }
-
-
+    
+    // Method to remove entry from records
+    public String removeEntry() {
+    	String n = name.getText();
+        int m = Integer.parseInt(month.getText());
+        int d = Integer.parseInt(day.getText());
+        int y = Integer.parseInt(year.getText());
+        System.out.println("Removing entry for " + n + " from " + d + "/" + m + "/" + y);
+        outputArea.setText("looking up record ...");
+        String message = myAthletes.removeEntry(n, d, m, y);
+        return message;
+    }
     
     public String lookupEntry() {
         int m = Integer.parseInt(month.getText());
