@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 /**
  *
- * @author saemundur
+ * @author 3022423
  */
 public class SwimEntryTest {
     
@@ -140,13 +140,13 @@ public class SwimEntryTest {
         System.out.println("getWhere");
         Entry instanceA = new SwimEntry("Alice", 1, 2, 2003, 0, 16, 7, 3,"outdoors");
         String expResultA = "outdoors";
-        String result = instanceA.getWhere();
-        assertEquals(expResultA, result);
+        String resultA = ((SwimEntry) instanceA).getWhere();
+        assertEquals(expResultA, resultA);
         
         Entry instanceB = new SwimEntry("Alice", 1, 2, 2003, 0, 16, 7, 3,"pool");
         String expResultB = "in a pool";
-        String result = instanceB.getWhere();
-        assertEquals(expResultB, result);
+        String resultB = ((SwimEntry) instanceB).getWhere();
+        assertEquals(expResultB, resultB);
     }
     /**
      * Test of getEntry method, of class SwimEntry.
